@@ -1,0 +1,28 @@
+name: Build LaTeX Document
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Read LaTeX config
+      id: config
+      run: echo "content=$(cat latex-config.json | jq -c .)" >> $GITHUB_OUTPUT
+
+    - name: Compile LaTeX
+      run: |
+        docker run --rm -v ${{ github.workspace }}:/data blang/latex:ctanfull ${{ fromJson(steps.config.outputs.content).compiler }} ${{ fromJson(steps.config.outputs.content).source }}
+
+    - name: Upload PDF artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: latex-pdf
+        path: ${{ fromJson(steps.config.outputs.content).output }}
