@@ -19,7 +19,11 @@ jobs:
 
     - name: Compile LaTeX
       run: |
-        docker run --rm -v ${{ github.workspace }}:/data blang/latex:ctanfull ${{ fromJson(steps.config.outputs.content).compiler }} ${{ fromJson(steps.config.outputs.content).source }}
+        docker run -it --rm \
+          --mount "type=bind,source=${{ github.workspace }},target=/data" \
+          --name "latex-builder" \
+          blang/latex:ctanfull \
+          ${{ fromJson(steps.config.outputs.content).compiler }} --jobname="${{ fromJson(steps.config.outputs.content).jobname }}" ${{ fromJson(steps.config.outputs.content).source }}
 
     - name: Upload PDF artifact
       uses: actions/upload-artifact@v4

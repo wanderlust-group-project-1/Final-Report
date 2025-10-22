@@ -1,5 +1,6 @@
 {
   "source": "Wanderlust.tex",
   "compiler": "pdflatex",
-  "output": "Wanderlust.pdf"
+  "output": "Wanderlust.pdf",
+  "jobname": "Wanderlust"
 }
