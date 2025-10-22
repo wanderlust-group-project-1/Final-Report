@@ -19,7 +19,7 @@ jobs:
 
     - name: Compile LaTeX
       run: |
-        docker run -it --rm \
+        docker run  --rm \
           --mount "type=bind,source=${{ github.workspace }},target=/data" \
           --name "latex-builder" \
           blang/latex:ctanfull \
